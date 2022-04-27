@@ -41,7 +41,7 @@ public class User {
 
     private String address;
 
-    @ManyToMany(cascade = {CascadeType.DETACH})
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(
                     name = "user_id",

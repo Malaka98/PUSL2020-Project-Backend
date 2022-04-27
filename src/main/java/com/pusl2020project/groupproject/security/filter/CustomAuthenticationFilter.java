@@ -66,11 +66,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
 //        tokens.put("access_token", access_token);
 //        tokens.put("refresh_token", refresh_token);
+        jwtAccessTokenCookie.setMaxAge(86400);
+//        jwtAccessTokenCookie.setSecure(true);
+        jwtAccessTokenCookie.setHttpOnly(true);
+        jwtAccessTokenCookie.setPath("/");
 
+        jwtRefreshTokenCookie.setMaxAge(86400);
+//        jwtRefreshTokenCookie.setSecure(true);
+        jwtRefreshTokenCookie.setHttpOnly(true);
+        jwtRefreshTokenCookie.setPath("/");
         response.setContentType(APPLICATION_JSON_VALUE);
         response.addCookie(jwtAccessTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
-        response.setStatus(HttpServletResponse.SC_OK);
+//        response.setStatus(HttpServletResponse.SC_OK);
 //        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 

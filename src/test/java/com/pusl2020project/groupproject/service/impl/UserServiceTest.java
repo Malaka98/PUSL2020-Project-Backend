@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,9 +24,10 @@ class UserServiceTest {
     private IRoleRepository roleRepository;
     @Autowired
     private UserService userService;
-
     @Autowired
     private IUserRepository iUserRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void saveRole() {
@@ -52,7 +54,7 @@ class UserServiceTest {
         userService.saveUser(UserDTO.builder()
                         .name("Malaka")
                         .username("root")
-                        .password("123")
+                        .password(passwordEncoder.encode("123"))
                         .email("root@gmail.com")
                         .address("abc")
                         .role(RoleDtoConverter.roleListToRoleDto(roles))
