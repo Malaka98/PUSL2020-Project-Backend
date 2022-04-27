@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -72,6 +73,12 @@ public class UserService implements IUserService, UserDetailsService {
 
         Role role = roleRepository.findByName(roleName);
         user.getRole().add(role);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+
+        return UserDtoConverter.userDTOListToUserList(iUserRepository.findAll());
     }
 }
 
