@@ -29,9 +29,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        if (request.getServletPath().equals("/bpii")) {
-//            filterChain.doFilter(request, response);
-//        } else {
+        if (request.getServletPath().equals("/api/login")) {
+            filterChain.doFilter(request, response);
+        } else {
 //            String authorizationHeader = request.getHeader(AUTHORIZATION);
 //            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             final AtomicReference<String> token = new AtomicReference<>();
@@ -77,6 +77,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             } else {
                 filterChain.doFilter(request, response);
             }
-//        }
+        }
     }
 }

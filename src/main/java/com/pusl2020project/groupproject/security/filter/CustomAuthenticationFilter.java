@@ -34,7 +34,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
 
@@ -78,8 +77,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setContentType(APPLICATION_JSON_VALUE);
         response.addCookie(jwtAccessTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
-//        response.setStatus(HttpServletResponse.SC_OK);
-//        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 
     @Override
