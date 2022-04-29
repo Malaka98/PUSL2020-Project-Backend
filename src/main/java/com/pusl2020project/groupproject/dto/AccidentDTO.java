@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class AccidentDTO {
     private String location;
     private String description;
-    private String userName;
+    private String vehicleNumber;
+    private String vehicleType;
 }

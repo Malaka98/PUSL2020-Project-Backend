@@ -7,16 +7,19 @@ import com.pusl2020project.groupproject.exception.UnknownExeception;
 import com.pusl2020project.groupproject.service.impl.UserService;
 import com.pusl2020project.groupproject.util.DtoConverter.RoleDtoConverter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService userService;
 

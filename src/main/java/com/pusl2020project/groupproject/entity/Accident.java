@@ -18,6 +18,18 @@ public class Accident {
     private Long id;
 
     @Column(
+            name = "vehicle_number",
+            nullable = false
+    )
+    private String vehicleNumber;
+
+    @Column(
+            name = "vehicle_type",
+            nullable = false
+    )
+    private String vehicleType;
+
+    @Column(
             nullable = false
     )
     private String location;
