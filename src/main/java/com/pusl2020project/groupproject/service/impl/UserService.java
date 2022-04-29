@@ -80,5 +80,15 @@ public class UserService implements IUserService, UserDetailsService {
 
         return UserDtoConverter.userDTOListToUserList(iUserRepository.findAll());
     }
+
+    @Override
+    @Transactional
+    public User deleteUser(String userName) {
+
+        User user = iUserRepository.findUserByUsername(userName);
+        iUserRepository.delete(user);
+
+        return user;
+    }
 }
 

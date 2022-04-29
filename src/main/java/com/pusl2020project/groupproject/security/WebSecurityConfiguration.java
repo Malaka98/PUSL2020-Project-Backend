@@ -5,6 +5,7 @@ import com.pusl2020project.groupproject.security.filter.CustomAuthorizationFilte
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,7 +48,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.addFilter(customAuthenticationFilter);
         http.addFilterAfter(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+                .anyRequest().authenticated();
 
 //        http.authorizeRequests().antMatchers("/api/users").hasAuthority("USER");
 //        http.authorizeRequests().antMatchers("/api/users").permitAll();
