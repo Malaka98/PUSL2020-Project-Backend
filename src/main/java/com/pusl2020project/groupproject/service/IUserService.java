@@ -1,5 +1,6 @@
 package com.pusl2020project.groupproject.service;
 
+import com.pusl2020project.groupproject.dto.ResponseUserDTO;
 import com.pusl2020project.groupproject.dto.RoleDTO;
 import com.pusl2020project.groupproject.dto.UserDTO;
 import com.pusl2020project.groupproject.entity.User;
@@ -12,4 +13,5 @@ public interface IUserService {
     void addRoleToUser(String userName, String roleName);
     List<UserDTO> getAllUsers();
     User deleteUser(String userName);
+    void updateUser(String UserName, ResponseUserDTO userDTO);
 }

@@ -1,11 +1,13 @@
 package com.pusl2020project.groupproject.service.impl;
 
 
+import com.pusl2020project.groupproject.dto.ResponseUserDTO;
 import com.pusl2020project.groupproject.dto.RoleDTO;
 import com.pusl2020project.groupproject.dto.UserDTO;
 import com.pusl2020project.groupproject.entity.Role;
 import com.pusl2020project.groupproject.entity.User;
 import com.pusl2020project.groupproject.exception.NotFoundException;
+import com.pusl2020project.groupproject.exception.UnknownExeception;
 import com.pusl2020project.groupproject.repository.IRoleRepository;
 import com.pusl2020project.groupproject.repository.IUserRepository;
 import com.pusl2020project.groupproject.security.CustomUserDetails;
@@ -37,58 +39,104 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = iUserRepository.findUserByUsername(username);
-        if (user == null) {
-            log.error("User not found in the database");
-            throw new UsernameNotFoundException("User not found in the database");
-        } else {
-            log.info("User found in the database");
-        }
+        try {
+            User user = iUserRepository.findUserByUsername(username);
+            if (user == null) {
+                log.error("User not found in the database");
+                throw new UsernameNotFoundException("User not found in the database");
+            } else {
+                log.info("User found in the database");
+            }
 
-        return new CustomUserDetails(user);
+            return new CustomUserDetails(user);
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
     }
 
 
     @Override
     public RoleDTO saveRole(RoleDTO role) {
-        return RoleDtoConverter.roleToDto(roleRepository.save(RoleDtoConverter.dtoToRole(role)));
+
+        try {
+            return RoleDtoConverter.roleToDto(roleRepository.save(RoleDtoConverter.dtoToRole(role)));
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
     }
 
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
-        User user = iUserRepository.save(UserDtoConverter.dtoToUser(userDTO));
 
-        return UserDtoConverter.userToUserDTO(user);
+        try {
+            User user = iUserRepository.save(UserDtoConverter.dtoToUser(userDTO));
+
+            return UserDtoConverter.userToUserDTO(user);
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
     }
 
     @Override
     public void addRoleToUser(String userName, String roleName) {
 
-        User user = iUserRepository.findUserByUsername(userName);
+        try {
+            User user = iUserRepository.findUserByUsername(userName);
 
-        if (user == null) {
-            log.warn(userName + " User Not Found");
-            throw new NotFoundException(userName + " User Not Found");
+            if (user == null) {
+                log.warn(userName + " User Not Found");
+                throw new NotFoundException(userName + " User Not Found");
+            }
+
+            Role role = roleRepository.findByName(roleName);
+            user.getRole().add(role);
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
         }
-
-        Role role = roleRepository.findByName(roleName);
-        user.getRole().add(role);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
 
-        return UserDtoConverter.userDTOListToUserList(iUserRepository.findAll());
+        try {
+            return UserDtoConverter.userDTOListToUserList(iUserRepository.findAll());
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
     }
 
     @Override
     @Transactional
     public User deleteUser(String userName) {
 
-        User user = iUserRepository.findUserByUsername(userName);
-        iUserRepository.delete(user);
+        try {
+            User user = iUserRepository.findUserByUsername(userName);
+            iUserRepository.delete(user);
 
-        return user;
+            return user;
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(String UserName, ResponseUserDTO userDTO) {
+
+        try {
+            UserDTO user = UserDtoConverter.userToUserDTO(iUserRepository.findUserByUsername(UserName));
+            iUserRepository.save(UserDtoConverter.dtoToUser(UserDTO.builder()
+                    .id(user.getId())
+                    .name(userDTO.getName())
+                    .username(userDTO.getUsername())
+                    .password(user.getPassword())
+                    .email(userDTO.getEmail())
+                    .address(userDTO.getAddress())
+                    .role(userDTO.getRole())
+                    .build()));
+
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
     }
 }
-

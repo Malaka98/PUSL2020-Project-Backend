@@ -45,6 +45,17 @@ public class UserController {
         }
     }
 
+    @PutMapping("/user/{userName}")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody ResponseUserDTO responseUserDTO, @PathVariable String userName) {
+        try {
+            userService.updateUser(userName, responseUserDTO);
+
+            return ResponseEntity.ok().body(responseUserDTO);
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
+    }
+
     @DeleteMapping("/user/{userName}")
     public ResponseEntity<?> deleteUser(@PathVariable String userName) {
 
