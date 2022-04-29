@@ -1,7 +1,6 @@
 package com.pusl2020project.groupproject.service.impl;
 
 import com.pusl2020project.groupproject.entity.Accident;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -28,6 +28,7 @@ public class AccidentController {
     public ResponseEntity<?> saveAccident(@Valid @RequestBody AccidentDTO accidentDTO, HttpServletRequest request) {
 
         String userName = (String) request.getSession().getAttribute("USER_NAME");
+        log.info("==============================>>>>>>>>" + userName);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accident").toUriString());
 
         accidentService.saveAccident(Accident.builder()
