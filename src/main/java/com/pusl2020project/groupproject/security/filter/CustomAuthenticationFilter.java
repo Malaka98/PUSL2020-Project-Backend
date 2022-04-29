@@ -3,6 +3,8 @@ package com.pusl2020project.groupproject.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pusl2020project.groupproject.dto.LoginDTO;
+import com.pusl2020project.groupproject.exception.UnknownExeception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,16 +34,23 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
 
-        return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        try {
+            LoginDTO loginDTO = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
+
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+
+            return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        } catch (IOException e) {
+            log.error("Runtime Error ======> " + e.getMessage());
+            throw new UnknownExeception(e.getMessage());
+        }
+
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
 
         UserDetails user = (UserDetails) authResult.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -66,21 +75,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //        tokens.put("access_token", access_token);
 //        tokens.put("refresh_token", refresh_token);
         jwtAccessTokenCookie.setMaxAge(86400);
-//        jwtAccessTokenCookie.setSecure(true);
+////        jwtAccessTokenCookie.setSecure(true);
         jwtAccessTokenCookie.setHttpOnly(true);
         jwtAccessTokenCookie.setPath("/");
-
+//
         jwtRefreshTokenCookie.setMaxAge(86400);
-//        jwtRefreshTokenCookie.setSecure(true);
+////        jwtRefreshTokenCookie.setSecure(true);
         jwtRefreshTokenCookie.setHttpOnly(true);
         jwtRefreshTokenCookie.setPath("/");
         response.setContentType(APPLICATION_JSON_VALUE);
         response.addCookie(jwtAccessTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
+//        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         log.error(failed.getMessage());
         Map<String, String> resBody = new HashMap<>();
         resBody.put("Unauthorized", failed.getMessage());
