@@ -76,6 +76,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>spring-boot-application</finalName>
 	</build>
 
 </project>
