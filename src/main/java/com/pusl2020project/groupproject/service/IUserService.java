@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface IUserService {
     RoleDTO saveRole(RoleDTO role);
+    Collection<RoleDTO> getAllRoles();
     Collection<RoleDTO> saveAllRole(Collection<RoleDTO> roleDTOS);
     UserDTO saveUser(UserDTO userDTO);
     void addRoleToUser(String userName, String roleName);

@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pusl2020project.groupproject.dto.LoginDTO;
-import com.pusl2020project.groupproject.exception.UnknownExeception;
+import com.pusl2020project.groupproject.exception.UnknownException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +43,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         } catch (IOException e) {
             log.error("Runtime Error ======> " + e.getMessage());
-            throw new UnknownExeception(e.getMessage());
+            throw new UnknownException(e.getMessage());
         }
 
     }

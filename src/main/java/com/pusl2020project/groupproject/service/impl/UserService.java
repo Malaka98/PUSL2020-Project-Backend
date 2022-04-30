@@ -7,7 +7,7 @@ import com.pusl2020project.groupproject.dto.UserDTO;
 import com.pusl2020project.groupproject.entity.Role;
 import com.pusl2020project.groupproject.entity.User;
 import com.pusl2020project.groupproject.exception.NotFoundException;
-import com.pusl2020project.groupproject.exception.UnknownExeception;
+import com.pusl2020project.groupproject.exception.UnknownException;
 import com.pusl2020project.groupproject.repository.IRoleRepository;
 import com.pusl2020project.groupproject.repository.IUserRepository;
 import com.pusl2020project.groupproject.security.CustomUserDetails;
@@ -51,7 +51,7 @@ public class UserService implements IUserService, UserDetailsService {
 
             return new CustomUserDetails(user);
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
         }
     }
 
@@ -62,7 +62,16 @@ public class UserService implements IUserService, UserDetailsService {
         try {
             return RoleDtoConverter.roleToDto(roleRepository.save(RoleDtoConverter.dtoToRole(role)));
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public Collection<RoleDTO> getAllRoles() {
+        try {
+            return RoleDtoConverter.roleListToRoleDto(roleRepository.findAll());
+        } catch (Exception ex) {
+            throw new UnknownException(ex.getMessage());
         }
     }
 
@@ -71,7 +80,7 @@ public class UserService implements IUserService, UserDetailsService {
         try {
             return RoleDtoConverter.roleListToRoleDto(roleRepository.saveAll(RoleDtoConverter.dtoRoleListToRole(roleDTOS)));
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
         }
     }
 
@@ -84,7 +93,7 @@ public class UserService implements IUserService, UserDetailsService {
 
             return UserDtoConverter.userToUserDTO(user);
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
         }
     }
 
@@ -102,7 +111,7 @@ public class UserService implements IUserService, UserDetailsService {
             Role role = roleRepository.findByName(roleName);
             user.getRole().add(role);
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
         }
     }
 
@@ -112,7 +121,7 @@ public class UserService implements IUserService, UserDetailsService {
         try {
             return UserDtoConverter.userDTOListToUserList(iUserRepository.findAll());
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
         }
     }
 
@@ -126,7 +135,7 @@ public class UserService implements IUserService, UserDetailsService {
 
             return user;
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
         }
     }
 
@@ -147,7 +156,7 @@ public class UserService implements IUserService, UserDetailsService {
                     .build()));
 
         } catch (Exception ex) {
-            throw new UnknownExeception(ex.getMessage());
+            throw new UnknownException(ex.getMessage());
         }
     }
 }

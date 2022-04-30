@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class UnknownExeception extends RuntimeException {
+public class UnknownException extends RuntimeException {
 
-    public UnknownExeception(String message) {
+    public UnknownException(String message) {
         super(message);
     }
 }

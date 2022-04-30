@@ -2,7 +2,7 @@ package com.pusl2020project.groupproject.util.DtoConverter;
 
 import com.pusl2020project.groupproject.dto.UserDTO;
 import com.pusl2020project.groupproject.entity.User;
-import com.pusl2020project.groupproject.exception.UnknownExeception;
+import com.pusl2020project.groupproject.exception.UnknownException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class UserDtoConverter {
                     .role(RoleDtoConverter.dtoRoleListToRole(userDTO.getRole()))
                     .build();
         } else {
-            throw new UnknownExeception(String.format("Unknown : %s entity\n", userDTO.getClass().getName()));
+            throw new UnknownException(String.format("Unknown : %s entity\n", userDTO.getClass().getName()));
         }
     }
 
@@ -37,7 +37,7 @@ public class UserDtoConverter {
                     .role(RoleDtoConverter.roleListToRoleDto(user.getRole()))
                     .build();
         } else {
-            throw new UnknownExeception(String.format("Unknown : %s entity\n", user.getClass().getName()));
+            throw new UnknownException(String.format("Unknown : %s entity\n", user.getClass().getName()));
         }
     }
 
@@ -49,7 +49,7 @@ public class UserDtoConverter {
             }
             return userList;
         } else {
-            throw new UnknownExeception(String.format("Unknown : %s entity\n", userDTOS.getClass().getName()));
+            throw new UnknownException(String.format("Unknown : %s entity\n", userDTOS.getClass().getName()));
         }
     }
 
@@ -61,7 +61,7 @@ public class UserDtoConverter {
             }
             return userDTOS;
         } else {
-            throw new UnknownExeception(String.format("Unknown : %s entity\n", users.getClass().getName()));
+            throw new UnknownException(String.format("Unknown : %s entity\n", users.getClass().getName()));
         }
     }
 }

@@ -50,6 +50,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterAfter(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/role").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/role").permitAll()
                 .anyRequest().authenticated();
 
 //        http.authorizeRequests().antMatchers("/api/users").hasAuthority("USER");
