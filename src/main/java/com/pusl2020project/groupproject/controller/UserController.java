@@ -1,6 +1,7 @@
 package com.pusl2020project.groupproject.controller;
 
 import com.pusl2020project.groupproject.dto.ResponseUserDTO;
+import com.pusl2020project.groupproject.dto.RoleDTO;
 import com.pusl2020project.groupproject.dto.UserDTO;
 import com.pusl2020project.groupproject.entity.User;
 import com.pusl2020project.groupproject.exception.UnknownExeception;
@@ -12,9 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api")
@@ -62,15 +63,31 @@ public class UserController {
     @DeleteMapping("/user/{userName}")
     public ResponseEntity<?> deleteUser(@PathVariable String userName) {
 
-        User user = userService.deleteUser(userName);
+        try {
+            User user = userService.deleteUser(userName);
 
-        return ResponseEntity.ok().body(ResponseUserDTO.builder()
-                        .id(user.getId())
-                        .name(user.getName())
-                        .username(user.getUsername())
-                        .email(user.getEmail())
-                        .address(user.getAddress())
-                        .role(RoleDtoConverter.roleListToRoleDto(user.getRole()))
-                .build());
+            return ResponseEntity.ok().body(ResponseUserDTO.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .address(user.getAddress())
+                    .role(RoleDtoConverter.roleListToRoleDto(user.getRole()))
+                    .build());
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/role")
+    ResponseEntity<Collection<RoleDTO>> saveRole(@Valid @RequestBody Collection<RoleDTO> roleDTOS) {
+
+        try {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role").toUriString());
+            return ResponseEntity.created(uri).body(userService.saveAllRole(
+                    RoleDtoConverter.roleListToRoleDto(RoleDtoConverter.dtoRoleListToRole(roleDTOS))));
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
     }
 }

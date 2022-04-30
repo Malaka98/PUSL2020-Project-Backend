@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -66,9 +67,19 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
+    public Collection<RoleDTO> saveAllRole(Collection<RoleDTO> roleDTOS) {
+        try {
+            return RoleDtoConverter.roleListToRoleDto(roleRepository.saveAll(RoleDtoConverter.dtoRoleListToRole(roleDTOS)));
+        } catch (Exception ex) {
+            throw new UnknownExeception(ex.getMessage());
+        }
+    }
+
+    @Override
     public UserDTO saveUser(UserDTO userDTO) {
 
         try {
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             User user = iUserRepository.save(UserDtoConverter.dtoToUser(userDTO));
 
             return UserDtoConverter.userToUserDTO(user);
