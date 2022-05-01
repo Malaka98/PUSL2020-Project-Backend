@@ -1,5 +1,7 @@
 # PUSL2020-Project-Backend
 
+mvn -Dtest=UserServiceTest test
+
 mvn -DskipTests package
 
 docker build -f Dockerfile -t docker-spring-boot .
