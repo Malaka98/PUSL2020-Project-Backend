@@ -51,7 +51,7 @@ public class UserService implements IUserService, UserDetailsService {
 
             return new CustomUserDetails(user);
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -62,7 +62,7 @@ public class UserService implements IUserService, UserDetailsService {
         try {
             return RoleDtoConverter.roleToDto(roleRepository.save(RoleDtoConverter.dtoToRole(role)));
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -71,7 +71,7 @@ public class UserService implements IUserService, UserDetailsService {
         try {
             return RoleDtoConverter.roleListToRoleDto(roleRepository.findAll());
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -80,7 +80,7 @@ public class UserService implements IUserService, UserDetailsService {
         try {
             return RoleDtoConverter.roleListToRoleDto(roleRepository.saveAll(RoleDtoConverter.dtoRoleListToRole(roleDTOS)));
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -93,7 +93,7 @@ public class UserService implements IUserService, UserDetailsService {
 
             return UserDtoConverter.userToUserDTO(user);
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -105,7 +105,7 @@ public class UserService implements IUserService, UserDetailsService {
 
             if (user == null) {
                 log.warn(userName + " User Not Found");
-                throw new NotFoundException(userName + " User Not Found");
+                throw new NotFoundException(userName + " User Not Found ⚠⚠⚠");
             }
 
             Role role = roleRepository.findByName(roleName);
@@ -121,7 +121,7 @@ public class UserService implements IUserService, UserDetailsService {
         try {
             return UserDtoConverter.userDTOListToUserList(iUserRepository.findAll());
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -135,7 +135,7 @@ public class UserService implements IUserService, UserDetailsService {
 
             return user;
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -156,7 +156,7 @@ public class UserService implements IUserService, UserDetailsService {
                     .build()));
 
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 }

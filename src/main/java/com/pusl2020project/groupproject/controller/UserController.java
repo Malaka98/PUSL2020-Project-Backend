@@ -45,7 +45,7 @@ public class UserController {
                     .build());
         } catch (Exception ex) {
 
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -56,7 +56,7 @@ public class UserController {
 
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -75,7 +75,7 @@ public class UserController {
                     .role(RoleDtoConverter.roleListToRoleDto(user.getRole()))
                     .build());
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -87,7 +87,7 @@ public class UserController {
             return ResponseEntity.created(uri).body(userService.saveAllRole(
                     RoleDtoConverter.roleListToRoleDto(RoleDtoConverter.dtoRoleListToRole(roleDTOS))));
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -96,7 +96,7 @@ public class UserController {
         try {
             return ResponseEntity.ok().body(userService.getAllRoles());
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 }

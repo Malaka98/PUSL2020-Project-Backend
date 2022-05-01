@@ -28,7 +28,7 @@ public class FileDownloadController {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName" + resource.getFilename())
                     .body(resource);
         }catch (Exception ex) {
-            throw new BadRequestException(ex.getMessage());
+            throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 }

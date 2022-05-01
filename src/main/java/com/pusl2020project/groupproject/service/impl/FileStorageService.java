@@ -1,6 +1,7 @@
 package com.pusl2020project.groupproject.service.impl;
 
 
+import com.pusl2020project.groupproject.exception.UnknownException;
 import com.pusl2020project.groupproject.service.IFileStorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -38,13 +39,13 @@ public class FileStorageService implements IFileStorageService {
         try {
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new UnknownException(e.getMessage() + " ⚠⚠⚠");
         }
 
         if (resource.exists() && resource.isReadable()) {
             return resource;
         } else {
-            throw new RuntimeException("the file doesn't exist or not readable");
+            throw new UnknownException("The file doesn't exist or not readable ⚠⚠⚠");
         }
     }
 }

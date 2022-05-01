@@ -29,17 +29,21 @@ public class AccidentController {
     @PostMapping("/accident")
     public ResponseEntity<?> saveAccident(@Valid @RequestBody AccidentDTO accidentDTO, HttpServletRequest request) {
 
-        String userName = (String) request.getSession().getAttribute("USER_NAME");
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accident").toUriString());
+        try {
+            String userName = (String) request.getSession().getAttribute("USER_NAME");
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accident").toUriString());
 
-        accidentService.saveAccident(Accident.builder()
-                        .vehicleNumber(accidentDTO.getVehicleNumber())
-                        .location(accidentDTO.getLocation())
-                        .vehicleType(accidentDTO.getVehicleType())
-                        .description(accidentDTO.getDescription())
-                        .build(), userName);
+            accidentService.saveAccident(Accident.builder()
+                    .vehicleNumber(accidentDTO.getVehicleNumber())
+                    .location(accidentDTO.getLocation())
+                    .vehicleType(accidentDTO.getVehicleType())
+                    .description(accidentDTO.getDescription())
+                    .build(), userName);
 
-        return ResponseEntity.created(uri).body(accidentDTO);
+            return ResponseEntity.created(uri).body(accidentDTO);
+        } catch (Exception ex) {
+            throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");
+        }
     }
 
     @PostMapping("/accident/upload/{id}")
@@ -59,7 +63,7 @@ public class AccidentController {
 
             return ResponseEntity.ok().body(response);
         }catch (Exception ex) {
-            throw new BadRequestException(ex.getMessage());
+            throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 }

@@ -48,9 +48,13 @@ public class AccidentService implements IAccidentService {
     @Transactional
     public void saveAccident(Accident accident, String userName) {
 
-        User user = iUserRepository.findUserByUsername(userName);
-        accident.setUser(user);
-        iAccidentRepository.save(accident);
+        try {
+            User user = iUserRepository.findUserByUsername(userName);
+            accident.setUser(user);
+            iAccidentRepository.save(accident);
+        } catch (Exception ex) {
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
+        }
     }
 
     @Override
@@ -63,17 +67,21 @@ public class AccidentService implements IAccidentService {
                     .path("/api/download/")
                     .path(fileName)
                     .toUriString();
-            Accident accident = iAccidentRepository.findById(accidentId).orElse(Accident.builder().build());
+            Accident accident = iAccidentRepository.findById(accidentId).orElse(null);
 
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            iPhotoRepository.save(Photos.builder()
-                    .url(url)
-                    .accident(accident)
-                    .build());
+            if(Objects.nonNull(accident)) {
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                iPhotoRepository.save(Photos.builder()
+                        .url(url)
+                        .accident(accident)
+                        .build());
 
-            return fileName;
+                return fileName;
+            } else {
+                throw new UnknownException("Accident recode not found in the database ⚠⚠⚠");
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UnknownException(e.getMessage() + " ⚠⚠⚠");
         }
     }
 
@@ -81,13 +89,14 @@ public class AccidentService implements IAccidentService {
     public void deleteAccident(Long id) {
         try {
             Accident accident = iAccidentRepository.findById(id).orElse(null);
+
             if(Objects.nonNull(accident)) {
                 iAccidentRepository.delete(accident);
             } else {
-                throw new UnknownException("Recode not found in database");
+                throw new UnknownException("Recode not found in database / Null Object ⚠⚠⚠");
             }
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage());
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
     }
 }
