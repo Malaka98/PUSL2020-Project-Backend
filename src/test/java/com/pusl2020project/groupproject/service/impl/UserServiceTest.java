@@ -12,7 +12,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -54,14 +54,18 @@ class UserServiceTest {
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
         roles.add(role2);
-        userService.saveUser(UserDTO.builder()
-                        .name("Malaka")
+        UserDTO userDTO = userService.saveUser(UserDTO.builder()
+                        .name("Sanduni")
                         .username("root")
-                        .password(passwordEncoder.encode("123"))
-                        .email("root@gmail.com")
+                        .password("123")
+                        .email("sanduni@gmail.com")
                         .address("abc")
                         .role(RoleDtoConverter.roleListToRoleDto(roles))
                 .build());
+
+        assertInstanceOf(UserDTO.class, userDTO);
+        assertNotNull(userDTO);
+
     }
 
     @Test
