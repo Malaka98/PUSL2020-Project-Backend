@@ -19,6 +19,7 @@ sudo docker run -d -it --network=host -p 8080:8080 docker-spring-boot
 # API
 
 _example login API =>_
+Method = POST
 ```sh
 http://139.59.119.228/api/login
 ```
@@ -29,6 +30,7 @@ http://139.59.119.228/api/login
   }
 ```
 _SingUp API =>_
+Method = POST
 ```sh  
 http://139.59.119.228/api/user
 ```
