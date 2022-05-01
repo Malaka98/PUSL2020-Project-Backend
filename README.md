@@ -16,34 +16,38 @@ docker build -f Dockerfile -t docker-spring-boot .
 sudo docker run -d -it --network=host -p 8080:8080 docker-spring-boot
 ```
 
-#API
+# API
 
+_example login API =>_
 ```sh
-example login API => 139.59.119.228/api/login
+http://139.59.119.228/api/login
 ```
-
->  {
->    "username": "root",
->    "password": "123"
->  }
+```javascript
+  {
+    "username": "root",
+    "password": "123"
+  }
+```
+_singIn up API =>_
 ```sh  
-sing up API => 139.59.119.228/api/user
+http://139.59.119.228/api/user
 ```
-
->   {
->     "name": "Rootx",
->      "username": "root",
->      "password": "123",
->      "email": "root@gmail.com",
->      "address": "localhost",
->      "role": [
->          {
->              "id": 1,
->              "name": "USER"
->          },
->          {
->              "id": 2,
->              "name": "POLICE_USER"
->          }
->      ]
->  }
+```javascript
+   {
+     "name": "Rootx",
+      "username": "root",
+      "password": "123",
+      "email": "root@gmail.com",
+      "address": "localhost",
+      "role": [
+          {
+              "id": 1,
+              "name": "USER"
+          },
+          {
+              "id": 2,
+              "name": "POLICE_USER"
+          }
+      ]
+  }
+```
