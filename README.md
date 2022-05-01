@@ -28,7 +28,7 @@ http://139.59.119.228/api/login
     "password": "123"
   }
 ```
-_singIn up API =>_
+_SingUp API =>_
 ```sh  
 http://139.59.119.228/api/user
 ```
