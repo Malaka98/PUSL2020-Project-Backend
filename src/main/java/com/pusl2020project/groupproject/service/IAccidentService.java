@@ -6,4 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IAccidentService {
     void saveAccident(Accident accident, String UserName);
     String storeFile(MultipartFile file, Long accidentId);
+    void deleteAccident(Long id);
 }

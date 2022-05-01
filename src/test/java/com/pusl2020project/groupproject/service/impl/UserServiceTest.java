@@ -8,7 +8,7 @@ import com.pusl2020project.groupproject.repository.IRoleRepository;
 import com.pusl2020project.groupproject.repository.IUserRepository;
 import com.pusl2020project.groupproject.util.DtoConverter.RoleDtoConverter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 class UserServiceTest {
 
@@ -30,6 +31,7 @@ class UserServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Test
+    @Order(1)
     void saveRole() {
         userService.saveRole(RoleDTO.builder()
                 .name("USER")
@@ -43,6 +45,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(2)
     void saveUser() {
         Role role = roleRepository.findByName("USER");
         Role role2 = roleRepository.findByName("POLICE_USER");
@@ -62,6 +65,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Disabled
     public void deleteUser() {
         User user = iUserRepository.findUserByUsername("root");
         log.info("*************************+++++" + user.getUsername());

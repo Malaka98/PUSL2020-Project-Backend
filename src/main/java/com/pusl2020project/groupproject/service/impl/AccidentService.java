@@ -3,6 +3,7 @@ package com.pusl2020project.groupproject.service.impl;
 import com.pusl2020project.groupproject.entity.Accident;
 import com.pusl2020project.groupproject.entity.Photos;
 import com.pusl2020project.groupproject.entity.User;
+import com.pusl2020project.groupproject.exception.UnknownException;
 import com.pusl2020project.groupproject.repository.IAccidentRepository;
 import com.pusl2020project.groupproject.repository.IPhotoRepository;
 import com.pusl2020project.groupproject.repository.IUserRepository;
@@ -73,6 +74,20 @@ public class AccidentService implements IAccidentService {
             return fileName;
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteAccident(Long id) {
+        try {
+            Accident accident = iAccidentRepository.findById(id).orElse(null);
+            if(Objects.nonNull(accident)) {
+                iAccidentRepository.delete(accident);
+            } else {
+                throw new UnknownException("Recode not found in database");
+            }
+        } catch (Exception ex) {
+            throw new UnknownException(ex.getMessage());
         }
     }
 }

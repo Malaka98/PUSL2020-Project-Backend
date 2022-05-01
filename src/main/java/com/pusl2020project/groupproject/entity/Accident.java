@@ -45,7 +45,10 @@ public class Accident {
     )
     private boolean isApproved = false;
 
-    @ManyToOne
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.EAGER
+    )
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id",
