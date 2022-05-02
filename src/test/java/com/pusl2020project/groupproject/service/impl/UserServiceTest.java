@@ -34,14 +34,17 @@ class UserServiceTest {
     @Order(1)
     void saveRole() {
         userService.saveRole(RoleDTO.builder()
-                .name("USER")
-                .build());
+                        .id(1L)
+                        .name("USER")
+                        .build());
         userService.saveRole(RoleDTO.builder()
-                .name("POLICE_USER")
-                .build());
+                        .id(2L)
+                        .name("POLICE_USER")
+                        .build());
         userService.saveRole(RoleDTO.builder()
-                .name("INSURANCE_USER")
-                .build());
+                        .id(3L)
+                        .name("INSURANCE_USER")
+                        .build());
     }
 
     @Test
