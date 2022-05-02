@@ -1,5 +1,6 @@
 package com.pusl2020project.groupproject.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pusl2020project.groupproject.dto.ResponseUserDTO;
 import com.pusl2020project.groupproject.dto.RoleDTO;
 import com.pusl2020project.groupproject.dto.UserDTO;
@@ -13,9 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -27,6 +33,13 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok().body(userService.getAllUsers());
+    }
+
+    @GetMapping("/validate")
+    public void validateUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Map<String, String> res = new HashMap<>();
+        res.put("User", (String) request.getSession().getAttribute("USER_NAME"));
+        new ObjectMapper().writeValue(response.getOutputStream(), res);
     }
 
     @PostMapping("/user")
