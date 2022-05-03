@@ -1,5 +1,7 @@
 package com.pusl2020project.groupproject.service.impl;
 
+import com.pusl2020project.groupproject.dto.ResponseAccidentDTO;
+import com.pusl2020project.groupproject.dto.ResponseUserDTO;
 import com.pusl2020project.groupproject.entity.Accident;
 import com.pusl2020project.groupproject.entity.Photos;
 import com.pusl2020project.groupproject.entity.User;
@@ -8,6 +10,7 @@ import com.pusl2020project.groupproject.repository.IAccidentRepository;
 import com.pusl2020project.groupproject.repository.IPhotoRepository;
 import com.pusl2020project.groupproject.repository.IUserRepository;
 import com.pusl2020project.groupproject.service.IAccidentService;
+import com.pusl2020project.groupproject.util.DtoConverter.RoleDtoConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -98,5 +103,38 @@ public class AccidentService implements IAccidentService {
         } catch (Exception ex) {
             throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
         }
+    }
+
+    @Override
+    public List<ResponseAccidentDTO> getAccidentByLoginUser(String userName) {
+        try {
+            User user = iUserRepository.findUserByUsername(userName);
+            if(Objects.nonNull(user)) {
+                List<ResponseAccidentDTO> responseAccidentDTOS = new ArrayList<>();
+                List<Accident> accidentList = iAccidentRepository.findAllByUser(user);
+                for (Accident accident : accidentList) {
+                    responseAccidentDTOS.add(ResponseAccidentDTO.builder()
+                                    .location(accident.getLocation())
+                                    .description(accident.getDescription())
+                                    .vehicleNumber(accident.getVehicleNumber())
+                                    .vehicleType(accident.getVehicleType())
+                                    .user(ResponseUserDTO.builder()
+                                            .id(accident.getUser().getId())
+                                            .name(accident.getUser().getName())
+                                            .username(accident.getUser().getUsername())
+                                            .address(accident.getUser().getAddress())
+                                            .email(accident.getUser().getEmail())
+                                            .role(RoleDtoConverter.roleListToRoleDto(accident.getUser().getRole()))
+                                            .build())
+                                    .build());
+                }
+                return responseAccidentDTOS;
+            } else {
+                throw new UnknownException(userName + " ===> user not found in the database");
+            }
+        } catch (Exception ex) {
+            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
+        }
+
     }
 }

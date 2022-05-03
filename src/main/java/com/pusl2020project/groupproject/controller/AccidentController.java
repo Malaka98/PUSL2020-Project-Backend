@@ -2,6 +2,7 @@ package com.pusl2020project.groupproject.controller;
 
 import com.pusl2020project.groupproject.dto.AccidentDTO;
 import com.pusl2020project.groupproject.dto.FileDTO;
+import com.pusl2020project.groupproject.dto.ResponseAccidentDTO;
 import com.pusl2020project.groupproject.entity.Accident;
 import com.pusl2020project.groupproject.exception.BadRequestException;
 import com.pusl2020project.groupproject.service.impl.AccidentService;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -41,6 +43,16 @@ public class AccidentController {
                     .build(), userName);
 
             return ResponseEntity.created(uri).body(accidentDTO);
+        } catch (Exception ex) {
+            throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");
+        }
+    }
+
+    @GetMapping("/accident")
+    ResponseEntity<List<ResponseAccidentDTO>> getAccidentByLoginUser(HttpServletRequest request) {
+        try {
+            String userName = (String) request.getSession().getAttribute("USER_NAME");
+            return ResponseEntity.ok().body(accidentService.getAccidentByLoginUser(userName));
         } catch (Exception ex) {
             throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");
         }

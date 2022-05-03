@@ -12,6 +12,7 @@ import static javax.persistence.GenerationType.*;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Accident {
     @Id
     @GeneratedValue(strategy = AUTO)
