@@ -16,5 +16,6 @@ public class ResponseAccidentDTO {
     private String vehicleNumber;
     private String vehicleType;
     private Status approved;
+    private String url;
     private ResponseUserDTO user;
 }

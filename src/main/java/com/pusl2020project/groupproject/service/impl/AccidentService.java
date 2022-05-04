@@ -116,21 +116,27 @@ public class AccidentService implements IAccidentService {
                 List<ResponseAccidentDTO> responseAccidentDTOS = new ArrayList<>();
                 List<Accident> accidentList = iAccidentRepository.findAllByUser(user);
                 for (Accident accident : accidentList) {
-                    responseAccidentDTOS.add(ResponseAccidentDTO.builder()
-                                    .location(accident.getLocation())
-                                    .description(accident.getDescription())
-                                    .vehicleNumber(accident.getVehicleNumber())
-                                    .vehicleType(accident.getVehicleType())
-                                    .approved(accident.getStatus())
-                                    .user(ResponseUserDTO.builder()
-                                            .id(accident.getUser().getId())
-                                            .name(accident.getUser().getName())
-                                            .username(accident.getUser().getUsername())
-                                            .address(accident.getUser().getAddress())
-                                            .email(accident.getUser().getEmail())
-                                            .role(RoleDtoConverter.roleListToRoleDto(accident.getUser().getRole()))
-                                            .build())
-                                    .build());
+                    Photos photo = iPhotoRepository.findByAccident(accident);
+//                    if(Objects.nonNull(photo)) {
+                        responseAccidentDTOS.add(ResponseAccidentDTO.builder()
+                                .location(accident.getLocation())
+                                .description(accident.getDescription())
+                                .vehicleNumber(accident.getVehicleNumber())
+                                .vehicleType(accident.getVehicleType())
+                                .approved(accident.getStatus())
+                                .url(Objects.nonNull(photo) ? photo.getUrl() : "photo eka na bosaa 😕")
+                                .user(ResponseUserDTO.builder()
+                                        .id(accident.getUser().getId())
+                                        .name(accident.getUser().getName())
+                                        .username(accident.getUser().getUsername())
+                                        .address(accident.getUser().getAddress())
+                                        .email(accident.getUser().getEmail())
+                                        .role(RoleDtoConverter.roleListToRoleDto(accident.getUser().getRole()))
+                                        .build())
+                                .build());
+//                    } else {
+//                        throw new UnknownException(userName + " ===> URL not found in the database");
+//                    }
                 }
                 return responseAccidentDTOS;
             } else {
