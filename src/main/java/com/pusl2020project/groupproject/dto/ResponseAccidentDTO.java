@@ -1,5 +1,6 @@
 package com.pusl2020project.groupproject.dto;
 
+import com.pusl2020project.groupproject.entity.enumTypes.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,6 @@ public class ResponseAccidentDTO {
     private String description;
     private String vehicleNumber;
     private String vehicleType;
-    private boolean isApproved;
+    private Status approved;
     private ResponseUserDTO user;
 }

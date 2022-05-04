@@ -5,6 +5,7 @@ import com.pusl2020project.groupproject.dto.ResponseUserDTO;
 import com.pusl2020project.groupproject.entity.Accident;
 import com.pusl2020project.groupproject.entity.Photos;
 import com.pusl2020project.groupproject.entity.User;
+import com.pusl2020project.groupproject.entity.enumTypes.Status;
 import com.pusl2020project.groupproject.exception.UnknownException;
 import com.pusl2020project.groupproject.repository.IAccidentRepository;
 import com.pusl2020project.groupproject.repository.IPhotoRepository;
@@ -54,8 +55,10 @@ public class AccidentService implements IAccidentService {
     public void saveAccident(Accident accident, String userName) {
 
         try {
+            log.info("****************************** ================= >>>>>>>>>" + accident.getStatus() + " ====== >>>>> " + Status.Pending);
             User user = iUserRepository.findUserByUsername(userName);
             accident.setUser(user);
+            accident.setStatus(Status.Pending);
             iAccidentRepository.save(accident);
         } catch (Exception ex) {
             throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
@@ -118,6 +121,7 @@ public class AccidentService implements IAccidentService {
                                     .description(accident.getDescription())
                                     .vehicleNumber(accident.getVehicleNumber())
                                     .vehicleType(accident.getVehicleType())
+                                    .approved(accident.getStatus())
                                     .user(ResponseUserDTO.builder()
                                             .id(accident.getUser().getId())
                                             .name(accident.getUser().getName())

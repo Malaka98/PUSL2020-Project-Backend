@@ -1,5 +1,6 @@
 package com.pusl2020project.groupproject.entity;
 
+import com.pusl2020project.groupproject.entity.enumTypes.Status;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,11 +41,12 @@ public class Accident {
     )
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(
             name = "is_approved",
             nullable = false
     )
-    private boolean isApproved = false;
+    private Status status = Status.Pending;
 
     @ManyToOne(
             cascade = CascadeType.DETACH,

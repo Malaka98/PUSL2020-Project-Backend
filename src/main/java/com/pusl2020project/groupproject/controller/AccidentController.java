@@ -1,5 +1,8 @@
 package com.pusl2020project.groupproject.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.pusl2020project.groupproject.dto.AccidentDTO;
 import com.pusl2020project.groupproject.dto.FileDTO;
 import com.pusl2020project.groupproject.dto.ResponseAccidentDTO;
@@ -16,7 +19,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.lang.reflect.Type;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -52,6 +57,7 @@ public class AccidentController {
     ResponseEntity<List<ResponseAccidentDTO>> getAccidentByLoginUser(HttpServletRequest request) {
         try {
             String userName = (String) request.getSession().getAttribute("USER_NAME");
+//            Type type = new TypeToken<List<ResponseAccidentDTO>>() {}.getType();
             return ResponseEntity.ok().body(accidentService.getAccidentByLoginUser(userName));
         } catch (Exception ex) {
             throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");
