@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Arrays.stream;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -34,51 +33,51 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 //        } else {
 //            String authorizationHeader = request.getHeader(AUTHORIZATION);
 //            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            final AtomicReference<String> token = new AtomicReference<>();
-            Cookie[] jwtTokenCookie = request.getCookies();
+        final AtomicReference<String> token = new AtomicReference<>();
+        Cookie[] jwtTokenCookie = request.getCookies();
 
-            if (jwtTokenCookie != null) {
-                Arrays.stream(jwtTokenCookie).forEach(cookie -> {
-                    if (Objects.equals(cookie.getName(), "access_token")) {
-                        token.set(cookie.getValue());
+        if (jwtTokenCookie != null) {
+            Arrays.stream(jwtTokenCookie).forEach(cookie -> {
+                        if (Objects.equals(cookie.getName(), "access_token")) {
+                            token.set(cookie.getValue());
+                        }
                     }
-                }
-                );
-                try {
+            );
+            try {
 //                    String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                    JWTVerifier jwtVerifier = JWT.require(algorithm).build();
-                    DecodedJWT decodedJWT = jwtVerifier.verify(token.get());
+                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                JWTVerifier jwtVerifier = JWT.require(algorithm).build();
+                DecodedJWT decodedJWT = jwtVerifier.verify(token.get());
 
-                    String username = decodedJWT.getSubject();
-                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
-                    request.getSession().setAttribute("USER_NAME", username);
-                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                String username = decodedJWT.getSubject();
+                String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                request.getSession().setAttribute("USER_NAME", username);
+                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-                    stream(roles).forEach(role -> {
-                        authorities.add(new SimpleGrantedAuthority(role));
-                    });
+                stream(roles).forEach(role -> {
+                    authorities.add(new SimpleGrantedAuthority(role));
+                });
 
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request, response);
-
-                } catch (Exception ex) {
-
-                    log.error("AUTHORIZATION ERROR");
-                    response.setHeader("error", ex.getMessage());
-                    response.setStatus(FORBIDDEN.value());
-//                    response.sendError(FORBIDDEN.value());
-                    Map<String, String> error = new HashMap<>();
-
-                    error.put("error_message", ex.getMessage());
-                    response.setContentType(APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
-                }
-            } else {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
+
+            } catch (Exception ex) {
+
+                log.error("AUTHORIZATION ERROR");
+                response.setHeader("error", ex.getMessage());
+                response.setStatus(FORBIDDEN.value());
+//                    response.sendError(FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+
+                error.put("error_message", ex.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
+        } else {
+            filterChain.doFilter(request, response);
         }
+    }
 
 //    }
 }

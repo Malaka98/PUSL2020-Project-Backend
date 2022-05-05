@@ -19,16 +19,6 @@ class AccidentServiceTest {
     private AccidentService accidentService;
 
     @Test
-    void saveAccident() {
-        accidentService.saveAccident(Accident.builder()
-                        .location("abc")
-                        .vehicleNumber("asd-876")
-                        .description("Lorem Ipsom")
-                        .vehicleType("xyz")
-                .build(), "root");
-    }
-
-    @Test
     void getAccidentByLoginUser() {
        List<ResponseAccidentDTO> accidentList = accidentService.getAccidentByLoginUser("root");
         for (ResponseAccidentDTO accident : accidentList) {

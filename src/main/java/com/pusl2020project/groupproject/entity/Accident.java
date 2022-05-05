@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.*;
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 @NoArgsConstructor

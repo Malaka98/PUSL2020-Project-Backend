@@ -5,18 +5,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 public class GroupProjectApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GroupProjectApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GroupProjectApplication.class, args);
+    }
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }

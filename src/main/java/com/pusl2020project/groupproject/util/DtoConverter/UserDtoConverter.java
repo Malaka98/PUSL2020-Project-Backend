@@ -10,7 +10,7 @@ import java.util.List;
 public class UserDtoConverter {
 
     public static User dtoToUser(UserDTO userDTO) {
-        if(userDTO != null) {
+        if (userDTO != null) {
             return User.builder()
                     .id(userDTO.getId())
                     .name(userDTO.getName())
@@ -26,7 +26,7 @@ public class UserDtoConverter {
     }
 
     public static UserDTO userToUserDTO(User user) {
-        if(user != null) {
+        if (user != null) {
             return UserDTO.builder()
                     .id(user.getId())
                     .name(user.getName())
@@ -42,9 +42,9 @@ public class UserDtoConverter {
     }
 
     public static List<User> userListToUserDTOList(List<UserDTO> userDTOS) {
-        if(userDTOS != null) {
+        if (userDTOS != null) {
             List<User> userList = new ArrayList<>();
-            for(UserDTO userDTO : userDTOS) {
+            for (UserDTO userDTO : userDTOS) {
                 userList.add(UserDtoConverter.dtoToUser(userDTO));
             }
             return userList;
@@ -54,9 +54,9 @@ public class UserDtoConverter {
     }
 
     public static List<UserDTO> userDTOListToUserList(List<User> users) {
-        if(users != null) {
+        if (users != null) {
             List<UserDTO> userDTOS = new ArrayList<>();
-            for(User user : users) {
+            for (User user : users) {
                 userDTOS.add(UserDtoConverter.userToUserDTO(user));
             }
             return userDTOS;

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,4 +15,5 @@ public class AccidentDTO {
     private String description;
     private String vehicleNumber;
     private String vehicleType;
+    private MultipartFile[] files;
 }

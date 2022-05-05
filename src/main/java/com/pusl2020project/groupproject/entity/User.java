@@ -5,11 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
-import static javax.persistence.InheritanceType.JOINED;
 
 @Entity
 @NoArgsConstructor
