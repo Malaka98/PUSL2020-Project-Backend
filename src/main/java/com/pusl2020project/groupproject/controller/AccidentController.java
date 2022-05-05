@@ -114,6 +114,8 @@ public class AccidentController {
                     fileDTOS.add(response);
                 });
 
-        return ResponseEntity.ok().body(fileDTOS);
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
+                .body(fileDTOS);
     }
 }
