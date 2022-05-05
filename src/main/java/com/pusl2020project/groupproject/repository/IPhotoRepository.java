@@ -5,7 +5,9 @@ import com.pusl2020project.groupproject.entity.Photos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IPhotoRepository extends JpaRepository<Photos, Long> {
-    Photos findByAccident(Accident accident);
+    List<Photos> findAllByAccident(Accident accident);
 }

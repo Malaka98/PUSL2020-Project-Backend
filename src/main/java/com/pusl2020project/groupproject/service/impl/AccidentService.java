@@ -116,7 +116,11 @@ public class AccidentService implements IAccidentService {
                 List<ResponseAccidentDTO> responseAccidentDTOS = new ArrayList<>();
                 List<Accident> accidentList = iAccidentRepository.findAllByUser(user);
                 for (Accident accident : accidentList) {
-                    Photos photo = iPhotoRepository.findByAccident(accident);
+                    List<Photos> photos = iPhotoRepository.findAllByAccident(accident);
+                    List<String> urls = new ArrayList<>();
+                    for(Photos photo : photos) {
+                        urls.add(photo.getUrl());
+                    }
 //                    if(Objects.nonNull(photo)) {
                         responseAccidentDTOS.add(ResponseAccidentDTO.builder()
                                 .location(accident.getLocation())
@@ -124,7 +128,7 @@ public class AccidentService implements IAccidentService {
                                 .vehicleNumber(accident.getVehicleNumber())
                                 .vehicleType(accident.getVehicleType())
                                 .approved(accident.getStatus())
-                                .url(Objects.nonNull(photo) ? photo.getUrl() : "photo eka na bosaa 😕")
+                                .url(urls)
                                 .user(ResponseUserDTO.builder()
                                         .id(accident.getUser().getId())
                                         .name(accident.getUser().getName())

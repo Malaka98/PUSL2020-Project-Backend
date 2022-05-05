@@ -25,7 +25,7 @@ public class FileDownloadController {
 
             return ResponseEntity.ok()
                     .contentType(contentType)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName" + resource.getFilename())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName" + resource.getFilename())
                     .body(resource);
         }catch (Exception ex) {
             throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");

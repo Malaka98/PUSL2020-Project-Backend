@@ -88,8 +88,8 @@ public class AccidentController {
         }
     }
 
-    @PostMapping(value = "/accident/multiple/upload/{accidentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<FileDTO>> multiplePhotosUpload(@ModelAttribute MultipleFileDTO multipleFileDTO, @PathVariable Long accidentId) {
+    @PostMapping(value = "/accident/multiple/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<FileDTO>> multiplePhotosUpload(@ModelAttribute MultipleFileDTO multipleFileDTO) {
 
         log.info("Location =======>" + multipleFileDTO.getLocation());
         log.info("Description =======>" + multipleFileDTO.getDescription());
@@ -99,14 +99,14 @@ public class AccidentController {
 
         Arrays.stream(multipleFileDTO.getFiles())
                 .forEach(file -> {
-                    String fileName = accidentService.storeFile(file, accidentId);
+//                    String fileName = accidentService.storeFile(file, accidentId);
                     String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                             .path("/api/download/")
-                            .path(fileName)
+                            .path(file.getOriginalFilename())
                             .toUriString();
 
                     FileDTO response = FileDTO.builder()
-                            .fileName(fileName)
+                            .fileName(file.getOriginalFilename())
                             .contentType(file.getContentType())
                             .url(url)
                             .build();
