@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pusl2020project.groupproject.dto.AccidentDTO;
 import com.pusl2020project.groupproject.dto.FileDTO;
+import com.pusl2020project.groupproject.dto.MultipleFileDTO;
 import com.pusl2020project.groupproject.dto.ResponseAccidentDTO;
 import com.pusl2020project.groupproject.entity.Accident;
 import com.pusl2020project.groupproject.exception.BadRequestException;
@@ -12,6 +13,7 @@ import com.pusl2020project.groupproject.service.impl.AccidentService;
 import com.pusl2020project.groupproject.service.impl.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +24,7 @@ import javax.validation.Valid;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -83,5 +86,34 @@ public class AccidentController {
         }catch (Exception ex) {
             throw new BadRequestException(ex.getMessage() + " ⚠⚠⚠");
         }
+    }
+
+    @PostMapping(value = "/accident/multiple/upload/{accidentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<FileDTO>> multiplePhotosUpload(@ModelAttribute MultipleFileDTO multipleFileDTO, @PathVariable Long accidentId) {
+
+        log.info("Location =======>" + multipleFileDTO.getLocation());
+        log.info("Description =======>" + multipleFileDTO.getDescription());
+        log.info("VehicleNumber =======>" + multipleFileDTO.getVehicleNumber());
+
+        List<FileDTO> fileDTOS = new ArrayList<>();
+
+        Arrays.stream(multipleFileDTO.getFiles())
+                .forEach(file -> {
+                    String fileName = accidentService.storeFile(file, accidentId);
+                    String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                            .path("/api/download/")
+                            .path(fileName)
+                            .toUriString();
+
+                    FileDTO response = FileDTO.builder()
+                            .fileName(fileName)
+                            .contentType(file.getContentType())
+                            .url(url)
+                            .build();
+
+                    fileDTOS.add(response);
+                });
+
+        return ResponseEntity.ok().body(fileDTOS);
     }
 }
