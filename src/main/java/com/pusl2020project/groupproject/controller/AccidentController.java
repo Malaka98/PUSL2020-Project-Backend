@@ -9,8 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -32,13 +34,12 @@ public class AccidentController {
     }
 
     @PostMapping(value = "/accident", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseAccidentDTO> multiplePhotosUpload(@ModelAttribute AccidentDTO accidentDTO, HttpServletRequest request) {
+    public ResponseEntity<ResponseAccidentDTO> multiplePhotosUpload(@ModelAttribute("accidentModel") AccidentDTO accidentDTO, HttpServletRequest request) {
 
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accident").toUriString());
         String userName = (String) request.getSession().getAttribute("USER_NAME");
-
         ResponseAccidentDTO responseAccidentDTO = accidentService.saveAccident(accidentDTO, userName);
-
-        return ResponseEntity.ok()
+        return ResponseEntity.created(uri)
                 .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                 .body(responseAccidentDTO);
     }
