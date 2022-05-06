@@ -71,7 +71,7 @@ public class AccidentService implements IAccidentService {
             Arrays.stream(accidentDTO.getFiles())
                     .forEach(file -> {
 
-                        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+                        String fileName = StringUtils.cleanPath(accident.getId() + Objects.requireNonNull(file.getOriginalFilename()));
                         Path filePath = Paths.get(fileStoragePath + "/" + fileName);
                         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                                 .path("/api/download/")
