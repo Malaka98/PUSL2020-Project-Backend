@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface IAccidentRepository extends JpaRepository<Accident, Long> {
     List<Accident> findAllByUser(User user);
+
+    int countAllByVehicleType(String vehicleType);
 }
