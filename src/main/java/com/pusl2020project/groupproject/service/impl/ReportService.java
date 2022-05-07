@@ -1,9 +1,11 @@
 package com.pusl2020project.groupproject.service.impl;
 
 import com.pusl2020project.groupproject.dto.AccidentTypePercentageDTO;
+import com.pusl2020project.groupproject.dto.CardDetailsDTO;
 import com.pusl2020project.groupproject.dto.VehicleTypeCountDTO;
 import com.pusl2020project.groupproject.entity.enumTypes.Status;
 import com.pusl2020project.groupproject.repository.IAccidentRepository;
+import com.pusl2020project.groupproject.repository.IUserRepository;
 import com.pusl2020project.groupproject.service.IReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class ReportService implements IReportService {
 
     private final IAccidentRepository iAccidentRepository;
+    private final IUserRepository iUserRepository;
 
 
     @Override
@@ -73,6 +76,26 @@ public class ReportService implements IReportService {
                         .name("Lorry")
                         .value(Math.round(lorryPercentage))
                         .build())
+                .build();
+    }
+
+    @Override
+    public CardDetailsDTO getCardDetails() {
+
+        float registeredUser = iUserRepository.getAllUsers();
+        float pendingAccident = iAccidentRepository.countAccidentByStatusEquals(Status.Pending);
+        float approvedAccident = iAccidentRepository.countAccidentByStatusEquals(Status.Approved);
+        float rejectAccident = iAccidentRepository.countAccidentByStatusEquals(Status.Reject);
+
+        return CardDetailsDTO.builder()
+                .registeredUser((int)registeredUser)
+                .registeredUserPercentage(registeredUser/100)
+                .approvedAccident((int)approvedAccident)
+                .approvedPercentage(approvedAccident/100)
+                .rejectedAccident((int)rejectAccident)
+                .rejectedPercentage(rejectAccident/100)
+                .pendingAccident((int)pendingAccident)
+                .pendingPercentage(pendingAccident/100)
                 .build();
     }
 }

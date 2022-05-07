@@ -50,5 +50,11 @@ public class ReportController {
 
         return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE)).body(response);
     }
+
+    @GetMapping("/get_card_details")
+    ResponseEntity<?> getCardDetails() {
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE)).body(reportService.getCardDetails());
+    }
 }
 
