@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class VehicleTypeCountDTO {
+public class AccidentTypePercentageDTO {
+
     private Bike bike;
     private Car car;
     private Van van;
@@ -22,7 +23,7 @@ public class VehicleTypeCountDTO {
     @Builder
     public static class Bike {
         private String name;
-        private String total_number_of_accident;
+        private int value;
     }
 
     @NoArgsConstructor
@@ -31,7 +32,7 @@ public class VehicleTypeCountDTO {
     @Builder
     public static class Car {
         private String name;
-        private String total_number_of_accident;
+        private int value;
     }
 
     @NoArgsConstructor
@@ -40,7 +41,7 @@ public class VehicleTypeCountDTO {
     @Builder
     public static class Van {
         private String name;
-        private String total_number_of_accident;
+        private int value;
     }
 
     @NoArgsConstructor
@@ -49,7 +50,7 @@ public class VehicleTypeCountDTO {
     @Builder
     public static class Bus {
         private String name;
-        private String total_number_of_accident;
+        private int value;
     }
 
     @NoArgsConstructor
@@ -58,7 +59,6 @@ public class VehicleTypeCountDTO {
     @Builder
     public static class Lorry {
         private String name;
-        private String total_number_of_accident;
+        private int value;
     }
 }
-

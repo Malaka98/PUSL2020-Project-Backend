@@ -11,4 +11,6 @@ public interface IAccidentService {
     void deleteAccident(Long id);
 
     List<ResponseAccidentDTO> getAccidentByLoginUser(String userName);
+
+
 }

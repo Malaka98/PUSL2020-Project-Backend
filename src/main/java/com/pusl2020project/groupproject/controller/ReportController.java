@@ -1,5 +1,6 @@
 package com.pusl2020project.groupproject.controller;
 
+import com.pusl2020project.groupproject.dto.AccidentTypePercentageDTO;
 import com.pusl2020project.groupproject.dto.VehicleTypeCountDTO;
 import com.pusl2020project.groupproject.service.impl.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @GetMapping("accident_type")
+    @GetMapping("/accident_type_count_report")
     public ResponseEntity<?> getCountByVehicleType() {
 
         List<Object> response = new ArrayList<>();
@@ -34,4 +35,20 @@ public class ReportController {
         return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                 .body(response);
     }
+
+    @GetMapping("/accident_type_percentage")
+    public ResponseEntity<?> getAccidentTypePercentage() {
+
+        List<Object> response = new ArrayList<>();
+        AccidentTypePercentageDTO accidentTypePercentageDTO = reportService.getAccidentTypePercentage();
+
+        response.add(accidentTypePercentageDTO.getBike());
+        response.add(accidentTypePercentageDTO.getCar());
+        response.add(accidentTypePercentageDTO.getVan());
+        response.add(accidentTypePercentageDTO.getBus());
+        response.add(accidentTypePercentageDTO.getLorry());
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE)).body(response);
+    }
 }
+
