@@ -47,6 +47,16 @@ public class UserController {
                 .body(response);
     }
 
+    @PostMapping("/validate_dashboard")
+    public ResponseEntity<?> validateDashboard(HttpServletRequest request) {
+
+        JsonObject response = new JsonObject();
+        response.addProperty("user", (String) request.getSession().getAttribute("USER_NAME"));
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
+                .body(response);
+    }
+
     @PostMapping("/user")
     public ResponseEntity<ResponseUserDTO> saveUser(@RequestBody UserDTO user) {
 

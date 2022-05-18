@@ -55,11 +55,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/accident_type_count_report").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
                 .antMatchers("/api/accident_type_percentage").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
                 .antMatchers("/api/get_card_details").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
+                .antMatchers("/api/validate_dashboard").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
                 .anyRequest().authenticated();
-
-//        http.authorizeRequests().antMatchers("/api/users").hasAuthority("USER");
-//        http.authorizeRequests().antMatchers("/api/users").permitAll();
-//        http.authorizeRequests().antMatchers("/", "/api/login/**").permitAll();
 
     }
 
