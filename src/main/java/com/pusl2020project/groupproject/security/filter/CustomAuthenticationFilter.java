@@ -20,9 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -51,16 +49,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
 
         UserDetails user = (UserDetails) authResult.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-
+        List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 40 * 60 * 1000))
                 .withIssuer(request.getRequestURI())
-                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withClaim("roles", roles)
                 .sign(algorithm);
 
         String refresh_token = JWT.create()
@@ -69,11 +67,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURI())
                 .sign(algorithm);
 
-//        Map<String, String> tokens = new HashMap<>();
+        Map<String, List<String>> responseBody = new HashMap<>();
         Cookie jwtAccessTokenCookie = new Cookie("access_token", access_token);
         Cookie jwtRefreshTokenCookie = new Cookie("refresh_token", refresh_token);
 
-//        tokens.put("access_token", access_token);
+        responseBody.put("user_role", roles);
 //        tokens.put("refresh_token", refresh_token);
         jwtAccessTokenCookie.setMaxAge(86400);
 ////        jwtAccessTokenCookie.setSecure(true);
@@ -87,7 +85,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setContentType(APPLICATION_JSON_VALUE);
         response.addCookie(jwtAccessTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
-//        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), responseBody);
     }
 
     @Override

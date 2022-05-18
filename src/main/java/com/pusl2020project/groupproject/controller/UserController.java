@@ -1,6 +1,7 @@
 package com.pusl2020project.groupproject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import com.pusl2020project.groupproject.dto.ResponseUserDTO;
 import com.pusl2020project.groupproject.dto.RoleDTO;
 import com.pusl2020project.groupproject.dto.UserDTO;
@@ -10,6 +11,7 @@ import com.pusl2020project.groupproject.service.impl.UserService;
 import com.pusl2020project.groupproject.util.DtoConverter.RoleDtoConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,11 +37,14 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
-    @GetMapping("/validate")
-    public void validateUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, String> res = new HashMap<>();
-        res.put("User", (String) request.getSession().getAttribute("USER_NAME"));
-        new ObjectMapper().writeValue(response.getOutputStream(), res);
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateUser(HttpServletRequest request) {
+
+        JsonObject response = new JsonObject();
+        response.addProperty("user", (String) request.getSession().getAttribute("USER_NAME"));
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
+                .body(response);
     }
 
     @PostMapping("/user")

@@ -9,13 +9,18 @@ import com.pusl2020project.groupproject.repository.IUserRepository;
 import com.pusl2020project.groupproject.util.DtoConverter.RoleDtoConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
@@ -24,27 +29,26 @@ class UserServiceTest {
     @Autowired
     private IRoleRepository roleRepository;
     @Autowired
-    private UserService userService;
-    @Autowired
     private IUserRepository iUserRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
+
 
     @Test
     @Order(1)
     void saveRole() {
         userService.saveRole(RoleDTO.builder()
-                        .id(1L)
-                        .name("USER")
-                        .build());
+                .id(1L)
+                .name("USER")
+                .build());
         userService.saveRole(RoleDTO.builder()
-                        .id(2L)
-                        .name("POLICE_USER")
-                        .build());
+                .id(2L)
+                .name("POLICE_USER")
+                .build());
         userService.saveRole(RoleDTO.builder()
-                        .id(3L)
-                        .name("INSURANCE_USER")
-                        .build());
+                .id(3L)
+                .name("INSURANCE_USER")
+                .build());
     }
 
     @Test
@@ -58,12 +62,12 @@ class UserServiceTest {
         roles.add(role);
         roles.add(role2);
         UserDTO userDTO = userService.saveUser(UserDTO.builder()
-                        .name("Sanduni")
-                        .username("root")
-                        .password("123")
-                        .email("sanduni@gmail.com")
-                        .address("abc")
-                        .role(RoleDtoConverter.roleListToRoleDto(roles))
+                .name("Sanduni")
+                .username("root")
+                .password("123")
+                .email("sanduni@gmail.com")
+                .address("abc")
+                .role(RoleDtoConverter.roleListToRoleDto(roles))
                 .build());
 
         assertInstanceOf(UserDTO.class, userDTO);

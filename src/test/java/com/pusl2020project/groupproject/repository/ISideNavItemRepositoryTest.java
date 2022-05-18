@@ -6,13 +6,14 @@ import com.pusl2020project.groupproject.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
 class ISideNavItemRepositoryTest {
 
@@ -25,6 +26,7 @@ class ISideNavItemRepositoryTest {
 
 
     @Test
+    @Rollback(value = false)
     void addSideNavItem() {
         Collection<Role> roles = new ArrayList<>();
 //        Role role = roleRepository.findByName("USER");
@@ -33,21 +35,21 @@ class ISideNavItemRepositoryTest {
 //        roles.add(role);
         roles.add(role2);
 
-//        SideNavItem sideNavItem = iSideNavItemRepository.save(SideNavItem.builder()
-//                .name("Report Accident")
-//                .label("Report Accident")
-//                .path("/app/accidentreport")
-//                .roles(roles)
-//                .build());
-
-//        SideNavItem sideNavItem = iSideNavItemRepository.save(SideNavItem.builder()
-//                .name("Pending Applications")
-//                .label("Pending Applications")
-//                .path("/app/application/pending")
-//                .roles(roles)
-//                .build());
-
         SideNavItem sideNavItem = iSideNavItemRepository.save(SideNavItem.builder()
+                .name("Report Accident")
+                .label("Report Accident")
+                .path("/app/accidentreport")
+                .roles(roles)
+                .build());
+
+        SideNavItem sideNavItem2 = iSideNavItemRepository.save(SideNavItem.builder()
+                .name("Pending Applications")
+                .label("Pending Applications")
+                .path("/app/application/pending")
+                .roles(roles)
+                .build());
+
+        SideNavItem sideNavItem3 = iSideNavItemRepository.save(SideNavItem.builder()
                 .name("Approved Applications")
                 .label("Approved Applications")
                 .path("/app/application/approved")
