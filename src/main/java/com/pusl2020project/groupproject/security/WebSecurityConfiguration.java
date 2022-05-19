@@ -52,10 +52,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/role").permitAll()
-                .antMatchers("/api/accident_type_count_report").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
-                .antMatchers("/api/accident_type_percentage").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
-                .antMatchers("/api/get_card_details").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
-                .antMatchers("/api/validate_dashboard").hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
+                .antMatchers(String.valueOf(List.of("/api/accident_type_count_report", "/api/accident_type_percentage",
+                        "/api/accident_type_percentage", "/api/get_card_details", "/api/validate_dashboard",
+                        "/api/get_all_accident", "/api/change_status"))).hasAnyAuthority("POLICE_USER", "INSURANCE_USER")
                 .anyRequest().authenticated();
 
     }

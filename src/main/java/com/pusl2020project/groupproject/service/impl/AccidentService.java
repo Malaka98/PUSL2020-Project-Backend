@@ -1,6 +1,7 @@
 package com.pusl2020project.groupproject.service.impl;
 
 import com.pusl2020project.groupproject.dto.AccidentDTO;
+import com.pusl2020project.groupproject.dto.ChangeStatusDTO;
 import com.pusl2020project.groupproject.dto.ResponseAccidentDTO;
 import com.pusl2020project.groupproject.dto.ResponseUserDTO;
 import com.pusl2020project.groupproject.entity.Accident;
@@ -105,7 +106,7 @@ public class AccidentService implements IAccidentService {
                             .build())
                     .build();
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
+            throw new UnknownException(ex.getMessage() + " ⚠");
         }
     }
 
@@ -120,7 +121,7 @@ public class AccidentService implements IAccidentService {
                 throw new UnknownException("Recode not found in database / Null Object ⚠⚠⚠");
             }
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
+            throw new UnknownException(ex.getMessage() + " ⚠");
         }
     }
 
@@ -159,8 +160,18 @@ public class AccidentService implements IAccidentService {
                 throw new UnknownException(userName + " ===> user not found in the database");
             }
         } catch (Exception ex) {
-            throw new UnknownException(ex.getMessage() + " ⚠⚠⚠");
+            throw new UnknownException(ex.getMessage() + " ⚠");
         }
 
+    }
+
+    @Override
+    public List<Accident> getAllAccident() {
+        return iAccidentRepository.findAll();
+    }
+
+    @Override
+    public int changeAccidentStatus(ChangeStatusDTO changeStatusDTO) {
+        return iAccidentRepository.updateStatus(changeStatusDTO.getId(), changeStatusDTO.getStatus());
     }
 }
