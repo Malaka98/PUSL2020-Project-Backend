@@ -15,6 +15,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Getter
 @Setter
 @Builder
+@ToString
 public class User {
 
     @Id

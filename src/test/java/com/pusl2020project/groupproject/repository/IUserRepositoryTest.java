@@ -1,5 +1,6 @@
 package com.pusl2020project.groupproject.repository;
 
+import com.pusl2020project.groupproject.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ class IUserRepositoryTest {
 
     @Test
     void findUserByUsername() {
+        User user = iUserRepository.findUserByUsername("root");
+
+        assertNotNull(user);
+
+        log.info("================>>>>>>" + user.toString());
     }
 
     @Test

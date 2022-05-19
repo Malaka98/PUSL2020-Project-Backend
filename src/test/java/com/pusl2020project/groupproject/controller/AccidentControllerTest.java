@@ -19,8 +19,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -69,5 +68,29 @@ class AccidentControllerTest {
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(201, status);
+    }
+
+    @Test
+    public void getAllAccident() throws Exception {
+        String uri = "/api/accident";
+
+        String loginInputJson = new ObjectMapper().writeValueAsString(LoginDTO.builder()
+                .username("root")
+                .password("123")
+                .build());
+
+        MvcResult loginMvcResult = mockMvc.perform(post("/api/login").contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(loginInputJson)).andReturn();
+
+        int loginStatus = loginMvcResult.getResponse().getStatus();
+        Cookie[] cookie = loginMvcResult.getResponse().getCookies();
+        assertEquals(200, loginStatus);
+
+        MvcResult mvcResult = mockMvc.perform(get(uri).contentType(MediaType.APPLICATION_JSON_VALUE).cookie(cookie)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+
+        log.info("Roles ============>" + mvcResult.getResponse().getContentAsString());
     }
 }
