@@ -17,4 +17,6 @@ public interface IAccidentService {
     List<Accident> getAllAccident();
 
     int changeAccidentStatus(ChangeStatusDTO changeStatusDTO);
+
+    Accident deleteAccidentById(Long accidentId);
 }

@@ -63,4 +63,11 @@ public class AccidentController {
         return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                 .body(response);
     }
+
+    @DeleteMapping("/accident/{accidentId}")
+    public ResponseEntity<?> deleteAccidentById(@PathVariable Long accidentId) {
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
+                .body(accidentService.deleteAccidentById(accidentId));
+    }
 }

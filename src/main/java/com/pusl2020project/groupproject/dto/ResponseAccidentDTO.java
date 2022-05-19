@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @Builder
 public class ResponseAccidentDTO {
+    private Long id;
     private String location;
     private String description;
     private String vehicleNumber;

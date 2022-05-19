@@ -139,6 +139,7 @@ public class AccidentService implements IAccidentService {
                         urls.add(photo.getUrl());
                     }
                     responseAccidentDTOS.add(ResponseAccidentDTO.builder()
+                            .id(accident.getId())
                             .location(accident.getLocation())
                             .description(accident.getDescription())
                             .vehicleNumber(accident.getVehicleNumber())
@@ -172,6 +173,26 @@ public class AccidentService implements IAccidentService {
 
     @Override
     public int changeAccidentStatus(ChangeStatusDTO changeStatusDTO) {
-        return iAccidentRepository.updateStatus(changeStatusDTO.getId(), changeStatusDTO.getStatus());
+        try {
+            return iAccidentRepository.updateStatus(changeStatusDTO.getId(), changeStatusDTO.getStatus());
+        } catch (Exception ex) {
+            throw new UnknownException(ex.getMessage() + " ⚠");
+        }
+    }
+
+    @Override
+    @Transactional
+    public Accident deleteAccidentById(Long accidentId) {
+        try {
+            Accident accident = iAccidentRepository.findById(accidentId).orElse(null);
+            assert accident != null;
+            List<Photos> photos = iPhotoRepository.findAllByAccident(accident);
+            assert photos != null;
+            iPhotoRepository.deleteAll(photos);
+            iAccidentRepository.delete(accident);
+            return accident;
+        } catch (Exception ex) {
+            throw new UnknownException(ex.getMessage() + " ⚠");
+        }
     }
 }
