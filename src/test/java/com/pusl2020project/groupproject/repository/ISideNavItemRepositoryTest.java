@@ -36,23 +36,16 @@ class ISideNavItemRepositoryTest {
         roles.add(role2);
 
         SideNavItem sideNavItem = iSideNavItemRepository.save(SideNavItem.builder()
-                .name("Report Accident")
-                .label("Report Accident")
+                .name("Add Report Accident")
+                .label("Add Report Accident")
                 .path("/app/accidentreport")
                 .roles(roles)
                 .build());
 
         SideNavItem sideNavItem2 = iSideNavItemRepository.save(SideNavItem.builder()
-                .name("Pending Applications")
-                .label("Pending Applications")
-                .path("/app/application/pending")
-                .roles(roles)
-                .build());
-
-        SideNavItem sideNavItem3 = iSideNavItemRepository.save(SideNavItem.builder()
-                .name("Approved Applications")
-                .label("Approved Applications")
-                .path("/app/application/approved")
+                .name("All Accident List")
+                .label("All Accident List")
+                .path("/app/accident_list")
                 .roles(roles)
                 .build());
 
